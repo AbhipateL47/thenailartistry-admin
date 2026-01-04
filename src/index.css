@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 30 30% 98%;
+    --foreground: 340 20% 15%;
+    
+    --primary: 340 75% 52%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 340 75% 45%;
+    
+    --secondary: 340 30% 96%;
+    --secondary-foreground: 340 75% 45%;
+    
+    --accent: 340 40% 94%;
+    --accent-foreground: 340 65% 40%;
+    
+    --muted: 30 15% 95%;
+    --muted-foreground: 340 10% 45%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 340 20% 15%;
+    
+    --border: 340 15% 88%;
+    --input: 340 15% 90%;
+    --ring: 340 75% 52%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 330 20% 8%;
+    --foreground: 330 10% 95%;
+    
+    --primary: 332 85% 60%;
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 330 20% 15%;
+    --secondary-foreground: 330 10% 90%;
+    
+    --muted: 330 15% 12%;
+    --muted-foreground: 330 10% 60%;
+    
+    --card: 330 20% 10%;
+    --card-foreground: 330 10% 95%;
+    
+    --border: 330 15% 20%;
+    --input: 330 15% 20%;
+    --ring: 332 85% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body;
+    font-size: 18px;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    line-height: 1.6;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  h1 {
+    font-weight: 700;
+  }
+
+  h2 {
+    font-weight: 600;
+  }
+
+  h3 {
+    font-weight: 500;
+  }
+}
+
