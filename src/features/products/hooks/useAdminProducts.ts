@@ -55,7 +55,7 @@ interface ProductsParams {
   includeDeleted?: 'true' | 'only'; // 'true' = include both, 'only' = only deleted
 }
 
-const fetchProducts = async (params: ProductsParams = {}): Promise<ProductsResponse> => {
+const fetchProducts = async (params: ProductsParams = {}, signal?: AbortSignal): Promise<ProductsResponse> => {
   const queryParams = new URLSearchParams();
   if (params.page) queryParams.append('page', params.page.toString());
   if (params.limit) queryParams.append('limit', params.limit.toString());
@@ -65,18 +65,18 @@ const fetchProducts = async (params: ProductsParams = {}): Promise<ProductsRespo
   if (params.isOnSale !== undefined) queryParams.append('isOnSale', params.isOnSale.toString());
   if (params.includeDeleted) queryParams.append('includeDeleted', params.includeDeleted);
 
-  const response = await apiClient.get<ProductsResponse>(`/v1/admin/products?${queryParams.toString()}`);
+  const response = await apiClient.get<ProductsResponse>(`/v1/admin/products?${queryParams.toString()}`, { signal });
   if (!response.data.success) {
     throw new Error('Failed to fetch products');
   }
   return response.data;
 };
 
-export const useAdminProducts = (params: ProductsParams = {}) => {
+export const useAdminProducts = (params: ProductsParams = {}, signal?: AbortSignal) => {
   return useQuery({
-    queryKey: ['adminProducts', params.page, params.limit, params.search, params.status, params.isFeatured, params.isOnSale, params.includeDeleted],
-    queryFn: () => fetchProducts(params),
-    staleTime: 30 * 1000, // 30 seconds
+    queryKey: ['admin', 'products', params],
+    queryFn: ({ signal }) => fetchProducts(params, signal),
+    placeholderData: (previousData) => previousData,
   });
 };
 

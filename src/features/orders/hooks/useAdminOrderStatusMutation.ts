@@ -59,8 +59,8 @@ export const useUpdateOrderStatus = () => {
     },
     onSuccess: (_, variables) => {
       // Invalidate order details and orders list
-      queryClient.invalidateQueries({ queryKey: ['adminOrderDetails', variables.orderId] });
-      queryClient.invalidateQueries({ queryKey: ['adminOrders'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'orders', variables.orderId] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'orders'] });
     },
   });
 };
@@ -78,8 +78,8 @@ export const useUpdateOrderTracking = () => {
     },
     onSuccess: (_, variables) => {
       // Invalidate order details and orders list
-      queryClient.invalidateQueries({ queryKey: ['adminOrderDetails', variables.orderId] });
-      queryClient.invalidateQueries({ queryKey: ['adminOrders'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'orders', variables.orderId] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'orders'] });
     },
   });
 };

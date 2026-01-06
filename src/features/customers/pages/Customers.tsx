@@ -23,7 +23,7 @@ export default function Customers() {
   const [bulkDeleteCustomersList, setBulkDeleteCustomersList] = useState<AdminCustomer[]>([]);
   const { singleDelete: deleteCustomer, bulkDelete: bulkDeleteCustomersMutation } = useDeleteResource({
     resource: "customers",
-    invalidateKeys: ["adminCustomers"],
+    invalidateKeys: [["admin", "customers"]],
     idField: "customerIds",
   });
 
@@ -33,7 +33,7 @@ export default function Customers() {
       const response = await apiClient.post(`/v1/admin/customers/${customerId}/restore`);
       if (response.data.success) {
         toast.success("Customer restored successfully");
-        queryClient.invalidateQueries({ queryKey: ['adminCustomers'] });
+        queryClient.invalidateQueries({ queryKey: ['admin', 'customers'] });
       }
     } catch (err: any) {
       toast.error(getErrorMessage(err));
@@ -262,7 +262,7 @@ export default function Customers() {
                 customerIds,
               });
               toast.success(`Restored ${customers.length} customer(s) successfully`);
-              queryClient.invalidateQueries({ queryKey: ["adminCustomers"] });
+              queryClient.invalidateQueries({ queryKey: ["admin", "customers"] });
             } catch (err: any) {
               toast.error(getErrorMessage(err));
               throw err;
@@ -284,7 +284,7 @@ export default function Customers() {
                 customerIds,
               });
               toast.success(`Permanently deleted ${customers.length} customer(s)`);
-              queryClient.invalidateQueries({ queryKey: ["adminCustomers"] });
+              queryClient.invalidateQueries({ queryKey: ["admin", "customers"] });
             } catch (err: any) {
               toast.error(getErrorMessage(err));
               throw err;

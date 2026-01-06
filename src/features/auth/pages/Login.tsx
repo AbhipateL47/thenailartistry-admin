@@ -9,8 +9,8 @@ import { useLogin, getErrorMessage } from "@/features/auth/hooks/useLogin";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("admin@thenailartistry.store");
+  const [password, setPassword] = useState("Qwerty#1234");
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);

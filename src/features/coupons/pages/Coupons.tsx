@@ -30,7 +30,7 @@ export default function Coupons() {
   const [bulkDeleteCouponsList, setBulkDeleteCouponsList] = useState<Coupon[]>([]);
   const { singleDelete: deleteCoupon, bulkDelete: bulkDeleteCouponsMutation } = useDeleteResource({
     resource: "coupons",
-    invalidateKeys: ["adminCoupons"],
+    invalidateKeys: [["admin", "coupons"]],
     idField: "couponIds",
   });
 
@@ -41,7 +41,7 @@ export default function Coupons() {
       const response = await apiClient.post(`/v1/admin/coupons/${couponId}/restore`);
       if (response.data.success) {
         toast.success("Coupon restored successfully");
-        queryClient.invalidateQueries({ queryKey: ['adminCoupons'] });
+        queryClient.invalidateQueries({ queryKey: ['admin', 'coupons'] });
       }
     } catch (err: any) {
       toast.error(getErrorMessage(err));
@@ -294,7 +294,7 @@ export default function Coupons() {
                 couponIds,
               });
               toast.success(`Restored ${coupons.length} coupon(s) successfully`);
-              queryClient.invalidateQueries({ queryKey: ["adminCoupons"] });
+              queryClient.invalidateQueries({ queryKey: ["admin", "coupons"] });
             } catch (err: any) {
               toast.error(getErrorMessage(err));
               throw err;
@@ -316,7 +316,7 @@ export default function Coupons() {
                 couponIds,
               });
               toast.success(`Permanently deleted ${coupons.length} coupon(s)`);
-              queryClient.invalidateQueries({ queryKey: ["adminCoupons"] });
+              queryClient.invalidateQueries({ queryKey: ["admin", "coupons"] });
             } catch (err: any) {
               toast.error(getErrorMessage(err));
               throw err;

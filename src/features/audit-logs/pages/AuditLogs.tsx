@@ -27,7 +27,7 @@ export default function AuditLogs() {
   const [bulkDeleteLogsList, setBulkDeleteLogsList] = useState<AuditLog[]>([]);
   const { singleDelete: deleteLog, bulkDelete: bulkDeleteLogsMutation } = useDeleteResource({
     resource: "audit-logs",
-    invalidateKeys: ["adminAuditLogs"],
+    invalidateKeys: [["admin", "auditLogs"]],
     idField: "auditLogIds",
     bulkEndpoint: "/v1/admin/audit-logs/bulk/delete",
   });

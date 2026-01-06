@@ -74,20 +74,19 @@ interface OrderDetailsResponse {
   data: AdminOrderDetails;
 }
 
-const fetchOrderDetails = async (orderId: string): Promise<AdminOrderDetails> => {
-  const response = await apiClient.get<OrderDetailsResponse>(`/v1/admin/orders/${orderId}`);
+const fetchOrderDetails = async (orderId: string, signal?: AbortSignal): Promise<AdminOrderDetails> => {
+  const response = await apiClient.get<OrderDetailsResponse>(`/v1/admin/orders/${orderId}`, { signal });
   if (!response.data.success) {
     throw new Error('Failed to fetch order details');
   }
   return response.data.data;
 };
 
-export const useAdminOrderDetails = (orderId: string) => {
+export const useAdminOrderDetails = (orderId: string, signal?: AbortSignal) => {
   return useQuery({
-    queryKey: ['adminOrderDetails', orderId],
-    queryFn: () => fetchOrderDetails(orderId),
+    queryKey: ['admin', 'orders', orderId],
+    queryFn: ({ signal }) => fetchOrderDetails(orderId, signal),
     enabled: !!orderId,
-    staleTime: 30 * 1000, // 30 seconds
   });
 };
 

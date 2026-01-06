@@ -60,7 +60,7 @@ export const useCreateProduct = () => {
     },
     onSuccess: () => {
       // Invalidate products list queries
-      queryClient.invalidateQueries({ queryKey: ['adminProducts'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'products'] });
     },
   });
 };
@@ -78,7 +78,7 @@ export const useUpdateProduct = () => {
     },
     onSuccess: () => {
       // Invalidate products list queries
-      queryClient.invalidateQueries({ queryKey: ['adminProducts'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'products'] });
     },
   });
 };
@@ -95,7 +95,7 @@ export const useDeleteProduct = () => {
     },
     onSuccess: () => {
       // Invalidate products list queries
-      queryClient.invalidateQueries({ queryKey: ['adminProducts'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'products'] });
     },
   });
 };
@@ -113,7 +113,7 @@ export const useUpdateProductStatus = () => {
     },
     onSuccess: () => {
       // Invalidate products list queries
-      queryClient.invalidateQueries({ queryKey: ['adminProducts'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'products'] });
     },
   });
 };
@@ -124,7 +124,7 @@ export { getErrorMessage };
 // Hook to get product by productCode
 export const useAdminProductByCode = (productCode: string) => {
   return useQuery({
-    queryKey: ['adminProductByCode', productCode],
+    queryKey: ['admin', 'products', 'code', productCode],
     queryFn: async (): Promise<AdminProduct> => {
       const response = await apiClient.get<ApiResponse<AdminProduct>>(`/v1/admin/products/code/${productCode}`);
       if (!response.data.success) {
@@ -133,7 +133,6 @@ export const useAdminProductByCode = (productCode: string) => {
       return response.data.data;
     },
     enabled: !!productCode && /^[A-Z0-9]{5}$/.test(productCode),
-    staleTime: 30 * 1000,
   });
 };
 
@@ -151,8 +150,7 @@ export const useUpdateProductByCode = () => {
     },
     onSuccess: () => {
       // Invalidate products list queries and product detail queries
-      queryClient.invalidateQueries({ queryKey: ['adminProducts'] });
-      queryClient.invalidateQueries({ queryKey: ['adminProductByCode'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'products'] });
     },
   });
 };

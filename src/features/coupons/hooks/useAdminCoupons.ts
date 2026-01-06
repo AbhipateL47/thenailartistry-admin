@@ -71,7 +71,7 @@ interface CreateCouponDto {
 
 interface UpdateCouponDto extends Partial<CreateCouponDto> {}
 
-const fetchCoupons = async (params: CouponsParams = {}): Promise<CouponsResponse> => {
+const fetchCoupons = async (params: CouponsParams = {}, signal?: AbortSignal): Promise<CouponsResponse> => {
   const queryParams = new URLSearchParams();
   if (params.page) queryParams.append('page', params.page.toString());
   if (params.limit) queryParams.append('limit', params.limit.toString());
@@ -80,35 +80,34 @@ const fetchCoupons = async (params: CouponsParams = {}): Promise<CouponsResponse
   if (params.expired) queryParams.append('expired', params.expired);
   if (params.deleted) queryParams.append('deleted', params.deleted);
 
-  const response = await apiClient.get<CouponsResponse>(`/v1/admin/coupons?${queryParams.toString()}`);
+  const response = await apiClient.get<CouponsResponse>(`/v1/admin/coupons?${queryParams.toString()}`, { signal });
   if (!response.data.success) {
     throw new Error('Failed to fetch coupons');
   }
   return response.data;
 };
 
-const fetchCouponById = async (id: string): Promise<Coupon> => {
-  const response = await apiClient.get<CouponResponse>(`/v1/admin/coupons/${id}`);
+const fetchCouponById = async (id: string, signal?: AbortSignal): Promise<Coupon> => {
+  const response = await apiClient.get<CouponResponse>(`/v1/admin/coupons/${id}`, { signal });
   if (!response.data.success) {
     throw new Error('Failed to fetch coupon');
   }
   return response.data.data;
 };
 
-export const useAdminCoupons = (params: CouponsParams = {}) => {
+export const useAdminCoupons = (params: CouponsParams = {}, signal?: AbortSignal) => {
   return useQuery({
-    queryKey: ['adminCoupons', params],
-    queryFn: () => fetchCoupons(params),
-    staleTime: 30 * 1000,
+    queryKey: ['admin', 'coupons', params],
+    queryFn: ({ signal }) => fetchCoupons(params, signal),
+    placeholderData: (previousData) => previousData,
   });
 };
 
-export const useAdminCoupon = (id: string) => {
+export const useAdminCoupon = (id: string, signal?: AbortSignal) => {
   return useQuery({
-    queryKey: ['adminCoupon', id],
-    queryFn: () => fetchCouponById(id),
+    queryKey: ['admin', 'coupons', id],
+    queryFn: ({ signal }) => fetchCouponById(id, signal),
     enabled: !!id,
-    staleTime: 30 * 1000,
   });
 };
 
@@ -124,7 +123,7 @@ export const useCreateCoupon = () => {
       return response.data.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['adminCoupons'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'coupons'] });
     },
   });
 };
@@ -141,8 +140,8 @@ export const useUpdateCoupon = () => {
       return response.data.data;
     },
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: ['adminCoupons'] });
-      queryClient.invalidateQueries({ queryKey: ['adminCoupon', variables.id] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'coupons'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'coupons', variables.id] });
     },
   });
 };
@@ -158,7 +157,7 @@ export const useDeleteCoupon = () => {
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['adminCoupons'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'coupons'] });
     },
   });
 };
@@ -175,7 +174,7 @@ export const useRestoreCoupon = () => {
       return response.data.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['adminCoupons'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'coupons'] });
     },
   });
 };

@@ -53,7 +53,7 @@ export default function Products() {
   const updateProductMutation = useUpdateProduct();
   const { singleDelete: deleteProduct, bulkDelete: bulkDeleteProductsMutation } = useDeleteResource({
     resource: "products",
-    invalidateKeys: ["adminProducts"],
+    invalidateKeys: [["admin", "products"]],
     idField: "productIds",
   });
 
@@ -90,7 +90,7 @@ export default function Products() {
       const response = await apiClient.post(`/v1/admin/products/${productId}/restore`);
       if (response.data.success) {
         toast.success("Product restored successfully");
-        queryClient.invalidateQueries({ queryKey: ['adminProducts'] });
+        queryClient.invalidateQueries({ queryKey: ['admin', 'products'] });
       }
     } catch (err: any) {
       toast.error(getErrorMessage(err));
@@ -156,7 +156,7 @@ export default function Products() {
           : ""
         }`
       );
-      queryClient.invalidateQueries({ queryKey: ["adminProducts"] });
+      queryClient.invalidateQueries({ queryKey: ["admin", "products"] });
       setBulkSalePercentDialogOpen(false);
       setBulkSaleProducts([]);
       setBulkSalePercentValue("");
@@ -523,7 +523,7 @@ export default function Products() {
                 productIds,
               });
               toast.success(`Restored ${products.length} product(s) successfully`);
-              queryClient.invalidateQueries({ queryKey: ["adminProducts"] });
+              queryClient.invalidateQueries({ queryKey: ["admin", "products"] });
             } catch (err: any) {
               toast.error(getErrorMessage(err));
               throw err;
@@ -545,7 +545,7 @@ export default function Products() {
                 productIds,
               });
               toast.success(`Permanently deleted ${products.length} product(s)`);
-              queryClient.invalidateQueries({ queryKey: ["adminProducts"] });
+              queryClient.invalidateQueries({ queryKey: ["admin", "products"] });
             } catch (err: any) {
               toast.error(getErrorMessage(err));
               throw err;
@@ -578,7 +578,7 @@ export default function Products() {
                 productIds,
               });
               toast.success(`Toggled featured status for ${products.length} product(s)`);
-              queryClient.invalidateQueries({ queryKey: ["adminProducts"] });
+              queryClient.invalidateQueries({ queryKey: ["admin", "products"] });
             } catch (err: any) {
               toast.error(getErrorMessage(err));
               throw err;
@@ -606,7 +606,7 @@ export default function Products() {
                 status: "active",
               });
               toast.success(`Activated ${products.length} product(s)`);
-              queryClient.invalidateQueries({ queryKey: ["adminProducts"] });
+              queryClient.invalidateQueries({ queryKey: ["admin", "products"] });
             } catch (err: any) {
               toast.error(getErrorMessage(err));
               throw err;
@@ -625,7 +625,7 @@ export default function Products() {
                 status: "inactive",
               });
               toast.success(`Deactivated ${products.length} product(s)`);
-              queryClient.invalidateQueries({ queryKey: ["adminProducts"] });
+              queryClient.invalidateQueries({ queryKey: ["admin", "products"] });
             } catch (err: any) {
               toast.error(getErrorMessage(err));
               throw err;
@@ -827,7 +827,7 @@ export default function Products() {
                   setSalePercentValue("");
 
                   // Invalidate queries
-                  queryClient.invalidateQueries({ queryKey: ["adminProducts"] });
+                  queryClient.invalidateQueries({ queryKey: ["admin", "products"] });
                 } catch (err) {
                   toast.error(getErrorMessage(err));
                 }
@@ -947,7 +947,7 @@ export default function Products() {
                   setBulkSalePercentValue("");
 
                   // Invalidate queries
-                  queryClient.invalidateQueries({ queryKey: ["adminProducts"] });
+                  queryClient.invalidateQueries({ queryKey: ["admin", "products"] });
                 } catch (err: any) {
                   toast.error(getErrorMessage(err));
                   throw err;

@@ -48,7 +48,7 @@ interface CustomersParams {
   deleted?: 'true' | 'only';
 }
 
-const fetchCustomers = async (params: CustomersParams = {}): Promise<CustomersResponse> => {
+const fetchCustomers = async (params: CustomersParams = {}, signal?: AbortSignal): Promise<CustomersResponse> => {
   const queryParams = new URLSearchParams();
   if (params.page) queryParams.append('page', params.page.toString());
   if (params.limit) queryParams.append('limit', params.limit.toString());
@@ -58,18 +58,18 @@ const fetchCustomers = async (params: CustomersParams = {}): Promise<CustomersRe
   if (params.isEmailVerified !== undefined) queryParams.append('isEmailVerified', params.isEmailVerified.toString());
   if (params.deleted) queryParams.append('deleted', params.deleted);
 
-  const response = await apiClient.get<CustomersResponse>(`/v1/admin/customers?${queryParams.toString()}`);
+  const response = await apiClient.get<CustomersResponse>(`/v1/admin/customers?${queryParams.toString()}`, { signal });
   if (!response.data.success) {
     throw new Error('Failed to fetch customers');
   }
   return response.data;
 };
 
-export const useAdminCustomers = (params: CustomersParams = {}) => {
+export const useAdminCustomers = (params: CustomersParams = {}, signal?: AbortSignal) => {
   return useQuery({
-    queryKey: ['adminCustomers', params],
-    queryFn: () => fetchCustomers(params),
-    staleTime: 30 * 1000, // 30 seconds
+    queryKey: ['admin', 'customers', params],
+    queryFn: ({ signal }) => fetchCustomers(params, signal),
+    placeholderData: (previousData) => previousData,
   });
 };
 

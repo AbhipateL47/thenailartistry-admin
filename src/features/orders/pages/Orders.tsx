@@ -25,7 +25,7 @@ export default function Orders() {
   const [bulkDeleteOrdersList, setBulkDeleteOrdersList] = useState<AdminOrder[]>([]);
   const { singleDelete: deleteOrder, bulkDelete: bulkDeleteOrdersMutation } = useDeleteResource({
     resource: "orders",
-    invalidateKeys: ["adminOrders"],
+    invalidateKeys: [["admin", "orders"]],
     idField: "orderIds",
   });
 
@@ -228,7 +228,7 @@ export default function Orders() {
                 orderIds,
               });
               toast.success(`Restored ${orders.length} order(s) successfully`);
-              queryClient.invalidateQueries({ queryKey: ["adminOrders"] });
+              queryClient.invalidateQueries({ queryKey: ["admin", "orders"] });
             } catch (err: any) {
               toast.error(getErrorMessage(err));
               throw err;
@@ -250,7 +250,7 @@ export default function Orders() {
                 orderIds,
               });
               toast.success(`Permanently deleted ${orders.length} order(s)`);
-              queryClient.invalidateQueries({ queryKey: ["adminOrders"] });
+              queryClient.invalidateQueries({ queryKey: ["admin", "orders"] });
             } catch (err: any) {
               toast.error(getErrorMessage(err));
               throw err;

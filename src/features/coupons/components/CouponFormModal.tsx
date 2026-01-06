@@ -147,7 +147,7 @@ export function CouponFormModal({
         toast.success("Coupon created successfully");
       }
       // Invalidate queries to refetch
-      queryClient.invalidateQueries({ queryKey: ['adminCoupons'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'coupons'] });
       onClose();
     } catch (err) {
       toast.error(getErrorMessage(err));

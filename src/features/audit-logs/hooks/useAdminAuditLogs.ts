@@ -38,7 +38,7 @@ interface AuditLogsParams {
   deleted?: 'true' | 'only' | 'false';
 }
 
-const fetchAuditLogs = async (params: AuditLogsParams = {}): Promise<AuditLogsResponse> => {
+const fetchAuditLogs = async (params: AuditLogsParams = {}, signal?: AbortSignal): Promise<AuditLogsResponse> => {
   const queryParams = new URLSearchParams();
   if (params.page) queryParams.append('page', params.page.toString());
   if (params.limit) queryParams.append('limit', params.limit.toString());
@@ -50,9 +50,9 @@ const fetchAuditLogs = async (params: AuditLogsParams = {}): Promise<AuditLogsRe
   if (params.deleted) queryParams.append('deleted', params.deleted);
 
   try {
-    const response = await apiClient.get<{ success: boolean; data: AuditLog[]; pagination: any }>(`/v1/admin/audit-logs?${queryParams.toString()}`);
+    const response = await apiClient.get<{ success: boolean; data: AuditLog[]; pagination: any }>(`/v1/admin/audit-logs?${queryParams.toString()}`, { signal });
     if (!response.data.success) {
-      throw new Error(response.data.message || 'Failed to fetch audit logs');
+      throw new Error('Failed to fetch audit logs');
     }
     return {
       success: response.data.success,
@@ -70,11 +70,11 @@ const fetchAuditLogs = async (params: AuditLogsParams = {}): Promise<AuditLogsRe
   }
 };
 
-export const useAdminAuditLogs = (params: AuditLogsParams = {}) => {
+export const useAdminAuditLogs = (params: AuditLogsParams = {}, signal?: AbortSignal) => {
   return useQuery({
-    queryKey: ['adminAuditLogs', params.page, params.limit, params.actorRole, params.action, params.collectionName, params.startDate, params.endDate, params.deleted],
-    queryFn: () => fetchAuditLogs(params),
-    staleTime: 30 * 1000,
+    queryKey: ['admin', 'auditLogs', params],
+    queryFn: ({ signal }) => fetchAuditLogs(params, signal),
+    placeholderData: (previousData) => previousData,
   });
 };
 

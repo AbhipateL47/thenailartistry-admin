@@ -31,7 +31,7 @@ const fetchAuthMe = async (): Promise<AdminUser> => {
 
 export const useAdminAuth = () => {
   return useQuery({
-    queryKey: ['adminAuth'],
+    queryKey: ['admin', 'auth'],
     queryFn: fetchAuthMe,
     retry: false,
     staleTime: 5 * 60 * 1000, // 5 minutes

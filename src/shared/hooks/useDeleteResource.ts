@@ -5,7 +5,7 @@ import { toast } from "@/shared/utils/toast";
 
 interface DeleteResourceOptions {
   resource: string; // e.g., "products", "orders", "coupons"
-  invalidateKeys: string[]; // React Query keys to invalidate
+  invalidateKeys: (string | string[])[]; // React Query keys to invalidate (array format: ['admin', 'products'])
   singleEndpoint?: (id: string) => string; // Custom endpoint for single delete
   bulkEndpoint?: string; // Custom endpoint for bulk delete
   idField?: string; // Field name for IDs in bulk request (default: `${resource}Ids`)

@@ -38,7 +38,7 @@ export const useLogin = () => {
     },
     onSuccess: () => {
       // Invalidate auth query to refetch user
-      queryClient.invalidateQueries({ queryKey: ['adminAuth'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'auth'] });
       // Navigate to dashboard
       navigate('/dashboard');
     },

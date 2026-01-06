@@ -1,5 +1,6 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { queryClient } from "./lib/queryClient";
 import { AdminLayout } from "./layouts/AdminLayout";
 import { ProtectedRoute } from "./features/auth/components/ProtectedRoute";
 import { PublicRoute } from "./features/auth/components/PublicRoute";
@@ -21,8 +22,6 @@ import Notifications from "./pages/Notifications";
 import ProductAttributes from "./features/products/pages/ProductAttributes";
 import Coupons from "./features/coupons/pages/Coupons";
 import AuditLogs from "./features/audit-logs/pages/AuditLogs";
-
-const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>

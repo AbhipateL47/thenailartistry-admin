@@ -40,7 +40,7 @@ interface OrdersParams {
   deleted?: 'true' | 'only';
 }
 
-const fetchOrders = async (params: OrdersParams = {}): Promise<OrdersResponse> => {
+const fetchOrders = async (params: OrdersParams = {}, signal?: AbortSignal): Promise<OrdersResponse> => {
   const queryParams = new URLSearchParams();
   if (params.page) queryParams.append('page', params.page.toString());
   if (params.limit) queryParams.append('limit', params.limit.toString());
@@ -50,18 +50,18 @@ const fetchOrders = async (params: OrdersParams = {}): Promise<OrdersResponse> =
   if (params.order) queryParams.append('order', params.order);
   if (params.deleted) queryParams.append('deleted', params.deleted);
 
-  const response = await apiClient.get<OrdersResponse>(`/v1/admin/orders?${queryParams.toString()}`);
+  const response = await apiClient.get<OrdersResponse>(`/v1/admin/orders?${queryParams.toString()}`, { signal });
   if (!response.data.success) {
     throw new Error('Failed to fetch orders');
   }
   return response.data;
 };
 
-export const useAdminOrders = (params: OrdersParams = {}) => {
+export const useAdminOrders = (params: OrdersParams = {}, signal?: AbortSignal) => {
   return useQuery({
-    queryKey: ['adminOrders', params],
-    queryFn: () => fetchOrders(params),
-    staleTime: 30 * 1000, // 30 seconds
+    queryKey: ['admin', 'orders', params],
+    queryFn: ({ signal }) => fetchOrders(params, signal),
+    placeholderData: (previousData) => previousData,
   });
 };
 

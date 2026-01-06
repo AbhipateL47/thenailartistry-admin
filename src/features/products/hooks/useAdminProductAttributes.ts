@@ -50,16 +50,16 @@ export const getErrorMessage = (error: any): string => {
 };
 
 // Get all product attributes
-export const useAdminProductAttributes = (isActive?: boolean) => {
+export const useAdminProductAttributes = (isActive?: boolean, signal?: AbortSignal) => {
   return useQuery({
-    queryKey: ['adminProductAttributes', isActive],
+    queryKey: ['admin', 'productAttributes', isActive],
     queryFn: async () => {
       const params = new URLSearchParams();
       if (isActive !== undefined) {
         params.append('isActive', String(isActive));
       }
       const response = await apiClient.get<ProductAttributesResponse>(
-        `/v1/admin/product-attributes${params.toString() ? `?${params.toString()}` : ''}`
+        `/v1/admin/product-attributes${params.toString() ? `?${params.toString()}` : ''}`, { signal }
       );
       return response.data.data;
     },
@@ -67,12 +67,12 @@ export const useAdminProductAttributes = (isActive?: boolean) => {
 };
 
 // Get single product attribute
-export const useAdminProductAttribute = (id: string) => {
+export const useAdminProductAttribute = (id: string, signal?: AbortSignal) => {
   return useQuery({
-    queryKey: ['adminProductAttribute', id],
+    queryKey: ['admin', 'productAttributes', id],
     queryFn: async () => {
       const response = await apiClient.get<ProductAttributeResponse>(
-        `/v1/admin/product-attributes/${id}`
+        `/v1/admin/product-attributes/${id}`, { signal }
       );
       return response.data.data;
     },
@@ -93,7 +93,7 @@ export const useCreateProductAttribute = () => {
       return response.data.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['adminProductAttributes'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'productAttributes'] });
       toast.success('Product attribute created successfully');
     },
     onError: (error: any) => {
@@ -115,7 +115,7 @@ export const useUpdateProductAttribute = () => {
       return response.data.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['adminProductAttributes'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'productAttributes'] });
       toast.success('Product attribute updated successfully');
     },
     onError: (error: any) => {
@@ -134,7 +134,7 @@ export const useDeleteProductAttribute = () => {
       return response.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['adminProductAttributes'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'productAttributes'] });
       toast.success('Product attribute deleted successfully');
     },
     onError: (error: any) => {
