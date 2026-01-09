@@ -16,9 +16,6 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { ArrowLeft, Loader2 } from "lucide-react";
-import { CardSkeleton } from "@/shared/components/skeletons/CardSkeleton";
-import { TableSkeleton } from "@/shared/components/skeletons/TableSkeleton";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useAdminOrderDetails, AdminOrderDetails } from "@/features/orders/hooks/useAdminOrderDetails";
 import { formatCurrency } from "@/shared/utils/currency";
 import { useUpdateOrderStatus, useUpdateOrderTracking, getOrderStatusErrorMessage } from "@/features/orders/hooks/useAdminOrderStatusMutation";

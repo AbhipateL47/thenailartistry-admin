@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, Package, ShoppingBag, Users, BarChart3, Settings, X, Menu, Tags, User, Ticket, FileText } from "lucide-react";
+import { LayoutDashboard, Package, ShoppingBag, Users, BarChart3, Settings, X, Menu, Tags, User, Ticket, FileText, Megaphone } from "lucide-react";
 import { cn } from "@/shared/utils/cn";
 import { useState } from "react";
 import { AdminUser } from "@/features/auth/hooks/useAdminAuth";
@@ -17,6 +17,7 @@ const sidebarItems: SidebarItem[] = [
   { label: "Orders", icon: ShoppingBag, path: "/orders", badge: 12 },
   { label: "Attributes", icon: Tags, path: "/product-attributes" },
   { label: "Coupons", icon: Ticket, path: "/coupons" },
+  { label: "Sales", icon: Megaphone, path: "/sales" },
   { label: "Customers", icon: Users, path: "/customers" },
   { label: "Analytics", icon: BarChart3, path: "/analytics" },
   { label: "Audit Logs", icon: FileText, path: "/audit-logs" },
@@ -127,7 +128,7 @@ export function Sidebar({ isMobileOpen, onMobileClose, isDesktopOpen = true, isC
                     "flex items-center gap-3 rounded-md text-sm font-medium transition-colors relative",
                     "hover:bg-muted",
                     isActive
-                      ? "bg-primary/10 text-primary"
+                      ? "bg-primary/10 text-primary border-l-4 border-primary"
                       : "text-muted-foreground hover:text-foreground",
                     isCollapsed ? "justify-center px-2 py-2.5" : "px-3 py-2.5"
                   )}

@@ -21,6 +21,7 @@ import Settings from "./pages/Settings";
 import Notifications from "./pages/Notifications";
 import ProductAttributes from "./features/products/pages/ProductAttributes";
 import Coupons from "./features/coupons/pages/Coupons";
+import Sales from "./features/sales/pages/Sales";
 import AuditLogs from "./features/audit-logs/pages/AuditLogs";
 
 const App = () => (
@@ -43,6 +44,7 @@ const App = () => (
           <Route path="products/view/:productCode" element={<ProductDetails />} />
           <Route path="product-attributes" element={<ProductAttributes />} />
           <Route path="coupons" element={<Coupons />} />
+          <Route path="sales" element={<Sales />} />
           <Route path="audit-logs" element={<AuditLogs />} />
           <Route path="orders" element={<Orders />} />
           <Route path="orders/:orderId" element={<OrderDetails />} />
