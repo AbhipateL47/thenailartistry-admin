@@ -5,7 +5,7 @@ interface TableSkeletonProps {
   columns?: number;
 }
 
-export function TableSkeleton({ rows = 5, columns = 6 }: TableSkeletonProps) {
+export function TableSkeleton({ rows = 10, columns = 6 }: TableSkeletonProps) {
   return (
     <div className="overflow-x-auto -mx-0">
       <table className="w-full">

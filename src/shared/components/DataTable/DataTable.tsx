@@ -407,7 +407,7 @@ export function DataTable<T = any>({
         <div className="p-4">
           {isLoading ? (
             <div className="overflow-hidden">
-              <TableSkeleton rows={5} columns={columns.length + (effectiveSelectable ? 1 : 0) + (rowActions.length > 0 ? 1 : 0)} />
+              <TableSkeleton rows={10} columns={columns.length + (effectiveSelectable ? 1 : 0) + (rowActions.length > 0 ? 1 : 0)} />
             </div>
           ) : (
             <DataTableTable

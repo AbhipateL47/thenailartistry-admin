@@ -49,6 +49,7 @@ export function useDeleteResource({
           products: "productIds",
           orders: "orderIds",
           coupons: "couponIds",
+          sales: "saleIds",
           "audit-logs": "auditLogIds",
           customers: "customerIds",
         };
