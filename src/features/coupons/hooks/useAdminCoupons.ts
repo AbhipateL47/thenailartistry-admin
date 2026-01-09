@@ -179,3 +179,45 @@ export const useRestoreCoupon = () => {
   });
 };
 
+// Lightweight coupon interface for selection
+export interface CouponForSelect {
+  _id: string;
+  code: string;
+  discountType: 'flat' | 'percentage';
+  discountValue: number;
+  validTill: string;
+  isActive: boolean;
+}
+
+interface CouponsForSelectResponse {
+  success: boolean;
+  data: CouponForSelect[];
+}
+
+interface CouponsForSelectParams {
+  q?: string;
+  limit?: number;
+}
+
+const fetchCouponsForSelect = async (params: CouponsForSelectParams = {}, signal?: AbortSignal): Promise<CouponForSelect[]> => {
+  const queryParams = new URLSearchParams();
+  if (params.q) queryParams.append('q', params.q);
+  if (params.limit) queryParams.append('limit', params.limit.toString());
+
+  const response = await apiClient.get<CouponsForSelectResponse>(
+    `/v1/admin/coupons/select?${queryParams.toString()}`,
+    { signal }
+  );
+  if (!response.data.success) {
+    throw new Error('Failed to fetch coupons for select');
+  }
+  return response.data.data;
+};
+
+export const useCouponsForSelect = (params: CouponsForSelectParams = {}, signal?: AbortSignal) => {
+  return useQuery({
+    queryKey: ['admin', 'coupons', 'select', params],
+    queryFn: ({ signal }) => fetchCouponsForSelect(params, signal),
+    staleTime: 30 * 1000, // 30 seconds - shorter than full list
+  });
+};
